@@ -1,6 +1,4 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
-using System.Xml.Linq;
-
 List<List<string>> game_field = new List<List<string>>();
 
 // Initialises the field currently with string ""
