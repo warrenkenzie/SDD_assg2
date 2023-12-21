@@ -1,39 +1,62 @@
-﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
-List<List<string>> game_field = new List<List<string>>();
-
-// Initialises the field currently with string ""
-InitializeField();
-
-// start of game loop
+﻿// main menu
+// MenuOption is the option the user decides
+int MenuOption;
 while (true)
 {
     // exception handling
     try
     {
         // MenuOption is the option the user decides
-        int MenuOption = DisplayMenu();
-
-        // when he chooses an option this block decides the case
-        switch (MenuOption)
+        MenuOption = DisplayMenu();
+           
+        // exception handling for integer out of range
+        if(MenuOption < 4 & MenuOption > 0)
         {
-            case 1:     // Start New Game
-                // displays the game_field on a console
-                DisplayField(game_field);
-                break;
-            case 2:     // Display High Scores
-                break;
-            case 3:     // Load Saved Game
-                break;
-            case 4:     // Exit Game
-                break;
-            default:    // when person inputs an integer out of range
-                Console.WriteLine("\nWrong Input\n");
-                break;
+            break;
+        }
+        else
+        {
+            // when person inputs an integer out of range
+            Console.WriteLine("\nWrong Input\n");
+            continue;
         }
     }
     catch(Exception ex)
     {
         Console.WriteLine("\n" + ex.Message + "\n");
+    }
+}
+
+// start of game loop
+// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
+List<List<string>> game_field = new List<List<string>>();
+
+// Initialises the field currently with string ""
+InitializeField();
+
+while (true)
+{
+    if(MenuOption == 1) // Start New Game
+    {
+        // displays the game_field on a console
+        DisplayField(game_field);
+        break;      //added break as it is a while loop  
+        //TODO game logic :
+
+    }
+    else if(MenuOption == 2) // Display High Scores
+    {
+
+
+    }
+    else if(MenuOption == 3) // Load Saved Game
+    { 
+        
+    
+    }
+    else if(MenuOption == 4) // Exit Game
+    {
+
     }
 }
 
