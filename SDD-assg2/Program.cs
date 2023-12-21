@@ -104,6 +104,7 @@ void DisplayField(List<List<string?>> game_field)
         Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[row].Count)));
         Console.WriteLine("+");
 
+        // thickness is the thickness of a row
         for (int thickness = 0; thickness < 3; thickness++)
         {
             for (int col = 0; col < game_field[row].Count(); col++)
