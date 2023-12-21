@@ -1,6 +1,9 @@
-﻿// main menu
-// MenuOption is the option the user decides
-int MenuOption;
+﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
+List<List<string?>> game_field = new List<List<string?>>();
+
+// MAIN MENU
+int MenuOption; // MenuOption is the option the user decides
+
 while (true)
 {
     // exception handling
@@ -12,6 +15,8 @@ while (true)
         // exception handling for integer out of range
         if(MenuOption < 4 & MenuOption > 0)
         {
+            // clear main menu after choosing an option
+            Console.Clear();
             break;
         }
         else
@@ -27,37 +32,36 @@ while (true)
     }
 }
 
-// start of game loop
-// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
-List<List<string>> game_field = new List<List<string>>();
-
-// Initialises the field currently with string ""
-InitializeField();
-
-while (true)
+if(MenuOption == 1) // Start New Game
 {
-    if(MenuOption == 1) // Start New Game
+    // START OF GAME LOOP
+
+    // Initialises the field currently with null
+    InitializeField();
+
+    while (true)
     {
         // displays the game_field on a console
         DisplayField(game_field);
         break;      //added break as it is a while loop  
+                    
         //TODO game logic :
-
     }
-    else if(MenuOption == 2) // Display High Scores
-    {
+
+}
+else if(MenuOption == 2) // Display High Scores
+{
 
 
-    }
-    else if(MenuOption == 3) // Load Saved Game
-    { 
+}
+else if(MenuOption == 3) // Load Saved Game
+{ 
         
     
-    }
-    else if(MenuOption == 4) // Exit Game
-    {
+}
+else if(MenuOption == 4) // Exit Game
+{
 
-    }
 }
 
 // displays the main menu and returns the which option the user chooses
@@ -82,25 +86,23 @@ void InitializeField()
 {
     for (int row = 0; row < 20; row++)
     {
-        List<string> row_field = new List<string>();
+        List<string?> row_field = new List<string?>();
         game_field.Add(row_field);
         for (int col = 0; col < 20; col++)
         {
-            game_field[row].Add("");
+            game_field[row].Add(null);
         }
     }
 }
 
 // Displays the field
-void DisplayField(List<List<string>> game_field)
+void DisplayField(List<List<string?>> game_field)
 {
     for (int row = 0; row < game_field.Count(); row++)
     {
         // Generate the row of the game_field
         Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[row].Count)));
         Console.WriteLine("+");
-
-
 
         for (int thickness = 0; thickness < 3; thickness++)
         {
