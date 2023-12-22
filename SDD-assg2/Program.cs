@@ -46,21 +46,43 @@ if(MenuOption == 1) // Start New Game
     InitializeBuildingInformation();
 
     // randomly choose 2 buildings for user to select
-    List<Building> list_of_2_random_buildings_selected = new List<Building>();
+    List<Building> list_of_2_random_buildings_selected = Generate_list_of_2_random_buildings_selected();
 
- 
-
-    /*for (int i=0; i < 2; i++)
+    // prompts user which building to choose
+    do
     {
-        // Generate a random integer
-        int randomNumber1 = random.Next(0, list_of_Buildings.Count());     
-        list_of_2_random_buildings_selected.Add(list_of_Buildings[randomIndex_ofBuilding]);
-        Console.WriteLine((i+1) + " " + list_of_Buildings[randomIndex_ofBuilding].BuildingName);
-    }*/
+        try
+        {
+            // show the 2 random buildings selected
+            for (int i = 0; i < list_of_2_random_buildings_selected.Count(); i++)
+            {
+                Console.WriteLine((i + 1) + " " + list_of_Buildings[i].BuildingName);
+            }
 
-    Console.Write("Choose a building to select: ");
-    int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine(list_of_Buildings[indexOf_random_buildings_selected-1].BuildingAcronym);
+            // prompt user to choose building
+            Console.Write("Choose a building to select: ");
+            int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine());
+
+            // check if the number is not out of range
+            if(indexOf_random_buildings_selected == 0 && indexOf_random_buildings_selected == 1)
+            {
+                Console.WriteLine(list_of_2_random_buildings_selected[indexOf_random_buildings_selected - 1].BuildingAcronym);
+                break;
+            }
+            else
+            {
+                // if index out of range
+                Console.Clear();
+                Console.WriteLine("\nWrong Input\n");    
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Clear();
+            Console.WriteLine("\n" + ex.Message + "\n");
+        }
+    } while (true); // Continue the loop until no exception occur (which means chooses correct building)
+
 
     while (true)
     {
