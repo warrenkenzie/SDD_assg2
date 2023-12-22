@@ -71,7 +71,6 @@ if(MenuOption == 1) // Start New Game
             // check if the number is not out of range
             if(indexOf_random_buildings_selected == 0 || indexOf_random_buildings_selected == 1)
             {
-                Console.WriteLine(list_of_2_random_buildings_selected[indexOf_random_buildings_selected].BuildingAcronym);
                 // displays the game_field on a console
                 DisplayField(game_field);
 
@@ -117,7 +116,7 @@ if(MenuOption == 1) // Start New Game
         }
     } while (If_have_exceptions); // Continue the loop until no exception occur (which means chooses correct building)
 
-
+    // THE REST OF THE GAME LOOP    
     while (true)
     {
         // displays the game_field on a console
@@ -135,23 +134,42 @@ if(MenuOption == 1) // Start New Game
             Console.WriteLine();
             if (userAction == 1) // Build a building
             {
-                for (int i = 0; i < list_of_Buildings.Count; i++)
+                try
                 {
-                    Console.WriteLine(i + 1 + " " + list_of_Buildings[i].BuildingName);
-                }
-                // Choose a building
-                Console.Write("Choose a Building: ");
-                int chosenBuilding_index = Convert.ToInt32(Console.ReadLine());
-                Building chosenBuilding = list_of_Buildings[chosenBuilding_index - 1];
+                    do
+                    {
+                        for (int i = 0; i < list_of_Buildings.Count; i++)
+                        {
+                            Console.WriteLine(i + 1 + ". " + list_of_Buildings[i].BuildingName);
+                        }
+                        Console.WriteLine("6. Exit Build Buidling");
 
-                // choose a location
-                Console.Write("Choose location(e.g A1): ");
-                string chosenplacement = Convert.ToString(Console.ReadLine());
+                        // Choose a building
+                        Console.Write("Choose a Building: ");
+                        int chosenBuilding_index = Convert.ToInt32(Console.ReadLine());
+                        Building chosenBuilding = list_of_Buildings[chosenBuilding_index - 1];
 
-                if (PlaceBuilding(chosenplacement, chosenBuilding))
+                        // if the person decided to no longer choose a building, exit the Build a Buidling menu
+                        if(chosenBuilding_index == 6)
+                        {
+                            break;
+                        }
+
+                        // choose a location
+                        Console.Write("Choose location(e.g A1): ");
+                        string chosenplacement = Convert.ToString(Console.ReadLine());
+
+                        if (PlaceBuilding(chosenplacement, chosenBuilding))
+                        {
+                            break;
+                        }
+                    } while (true);
+                }catch(Exception ex)
                 {
-                    continue;
+                    Console.WriteLine("\n" + ex.Message + "\n");
                 }
+                
+                
             }
             else if (userAction == 2) // next turn
             {
@@ -368,7 +386,7 @@ bool CheckPlacement(string placement)
     List<string> list_of_alphabets = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
             "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
-    // Define the regular expression pattern
+    // Define the regular expression pattern 
     string pattern = @"^[A-Z](?!0\d)\d{1,2}$";
     // Use Regex.IsMatch to check if the input matches the pattern and if the placement is within the field, so just check if there is an alphabet and number 
     if (Regex.IsMatch(placement, pattern) == true)
