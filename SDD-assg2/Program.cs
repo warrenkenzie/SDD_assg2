@@ -78,11 +78,12 @@ if(MenuOption == 1) // Start New Game
                 {
                     try
                     {
-                        Console.Write("Select where to place the building (e.g A1): "); string placement = Convert.ToString(Console.ReadLine());
-                        // Define the regular expression pattern
-                        string pattern = @"^[A-Z]\d$";
-                        // Use Regex.IsMatch to check if the input matches the pattern and if the placement is within the field
-                        if (Regex.IsMatch(placement, pattern) == true)
+                        Console.Write("Select where to place the building (e.g A1): "); 
+                        string placement = Convert.ToString(Console.ReadLine());
+                        Console.WriteLine(placement);
+                        // validate the user's input
+                        bool CheckPlacementSuccess = CheckPlacement(placement);
+                        if(CheckPlacementSuccess == true)
                         {
                             Console.WriteLine("Place Successfully");
                             If_have_exceptions = false; break;
@@ -290,3 +291,35 @@ List<Building> Generate_list_of_2_random_buildings_selected()
 {
     if()
 }*/
+
+// check placement inputted by user
+// returns true if the placement is correct
+// returns false if placement is not correct
+bool CheckPlacement(string placement)
+{
+    List<string> list_of_alphabets = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+    // Define the regular expression pattern
+    string pattern = @"^[A-Z](?!0\d)\d{1,2}$";
+    // Use Regex.IsMatch to check if the input matches the pattern and if the placement is within the field, so just check if there is an alphabet and number 
+    if (Regex.IsMatch(placement, pattern) == true)
+    {
+        // check if its within the game_field
+        int placement_col_index = list_of_alphabets.IndexOf(Convert.ToString(placement[0])) + 1;
+        int placement_row_index = int.Parse(placement.Substring(1));
+
+        if (placement_col_index <= game_field[0].Count && placement_row_index <= game_field.Count) 
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
