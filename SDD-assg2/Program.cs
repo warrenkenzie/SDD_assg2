@@ -56,24 +56,23 @@ if(MenuOption == 1) // Start New Game
             // show the 2 random buildings selected
             for (int i = 0; i < list_of_2_random_buildings_selected.Count(); i++)
             {
-                Console.WriteLine((i + 1) + " " + list_of_Buildings[i].BuildingName);
+                Console.WriteLine((i + 1) + " " + list_of_2_random_buildings_selected[i].BuildingName);
             }
 
             // prompt user to choose building
             Console.Write("Choose a building to select: ");
-            int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine());
+            int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine()) - 1;
 
             // check if the number is not out of range
-            if(indexOf_random_buildings_selected == 0 && indexOf_random_buildings_selected == 1)
+            if (indexOf_random_buildings_selected == 0 || indexOf_random_buildings_selected == 1)
             {
-                Console.WriteLine(list_of_2_random_buildings_selected[indexOf_random_buildings_selected - 1].BuildingAcronym);
                 break;
             }
             else
             {
                 // if index out of range
                 Console.Clear();
-                Console.WriteLine("\nWrong Input\n");    
+                Console.WriteLine("\nWrong Input\n");
             }
         }
         catch (Exception ex)
