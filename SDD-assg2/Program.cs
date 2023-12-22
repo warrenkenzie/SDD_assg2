@@ -80,10 +80,9 @@ if(MenuOption == 1) // Start New Game
                     {
                         Console.Write("Select where to place the building (e.g A1): "); 
                         string placement = Convert.ToString(Console.ReadLine());
-                        Console.WriteLine(placement);
                         // validate the user's input
-                        bool CheckPlacementSuccess = CheckPlacement(placement);
-                        if(CheckPlacementSuccess == true)
+                        bool placementSuccessful = PlaceBuilding(placement, list_of_2_random_buildings_selected[indexOf_random_buildings_selected]);
+                        if (placementSuccessful)
                         {
                             Console.WriteLine("Place Successfully");
                             If_have_exceptions = false; break;
@@ -293,7 +292,7 @@ List<Building> Generate_list_of_2_random_buildings_selected()
 }*/
 
 // check placement inputted by user
-// returns true if the placement is correct
+// returns true if the placement is correct and there is nothing placed in the placement selected
 // returns false if placement is not correct
 bool CheckPlacement(string placement)
 {
@@ -311,12 +310,42 @@ bool CheckPlacement(string placement)
 
         if (placement_col_index <= game_field[0].Count && placement_row_index <= game_field.Count) 
         {
-            return true;
+            // if the designated place is not null
+            if (game_field[placement_row_index - 1][placement_col_index-1] != null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         else
         {
             return false;
         }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+// check placement inputted by user
+// returns true if placed successfully
+// returns false if placement is successful
+bool PlaceBuilding(string placement,Building building)
+{
+    List<string> list_of_alphabets = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+    if (CheckPlacement(placement))
+    {
+        int placement_col_index = list_of_alphabets.IndexOf(Convert.ToString(placement[0]));
+        int placement_row_index = int.Parse(placement.Substring(1)) - 1;
+
+        game_field[placement_row_index][placement_col_index] = building;
+        return true;
     }
     else
     {
