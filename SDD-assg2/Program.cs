@@ -1,11 +1,13 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
 using SDD_assg2;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
-
+// turn counter
+int turn = 0;
 
 // MAIN MENU
 int MenuOption; // MenuOption is the option the user decides
@@ -41,7 +43,7 @@ while (true)
 if(MenuOption == 1) // Start New Game
 {
     // START OF GAME LOOP
-
+   
     // Initialises the field currently with null
     InitializeField();
     // Initialises the list of Buildings
@@ -85,6 +87,7 @@ if(MenuOption == 1) // Start New Game
                         if (placementSuccessful)
                         {
                             Console.WriteLine("Place Successfully");
+                            turn += 1;
                             If_have_exceptions = false; break;
                         }
                         else
@@ -120,10 +123,74 @@ if(MenuOption == 1) // Start New Game
         // displays the game_field on a console
         DisplayField(game_field);
         
+        // prompt user what action they want to choose
+        try
+        {
+            Console.WriteLine("Turn " + turn);
+            Console.WriteLine("Choose your action: \n" +
+                               "1. Build Building\n" +
+                               "2. Next Turn");
+            Console.Write("Choose: ");
+            int userAction = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
+            if (userAction == 1) // Build a building
+            {
+                for (int i = 0; i < list_of_Buildings.Count; i++)
+                {
+                    Console.WriteLine(i + 1 + " " + list_of_Buildings[i].BuildingName);
+                }
+                // Choose a building
+                Console.Write("Choose a Building: ");
+                int chosenBuilding_index = Convert.ToInt32(Console.ReadLine());
+                Building chosenBuilding = list_of_Buildings[chosenBuilding_index - 1];
+
+                // choose a location
+                Console.Write("Choose location(e.g A1): ");
+                string chosenplacement = Convert.ToString(Console.ReadLine());
+
+                if (PlaceBuilding(chosenplacement, chosenBuilding))
+                {
+                    continue;
+                }
+            }
+            else if (userAction == 2) // next turn
+            {
+                try
+                {
+
+                    Console.Write("Next turn?(y/n): ");
+                    string y_n_nextTurn = Console.ReadLine();
+                    Console.WriteLine();
+                    if (y_n_nextTurn == "y")
+                    {
+                        NextTurn();
+                        Console.Clear();
+                    }
+                    else if (y_n_nextTurn == "n")
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("\n" + ex.Message + "\n");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n" + "No Option" + "\n");
+            }
+        }
+        catch(Exception ex) 
+        {
+            Console.WriteLine("\n" + ex.Message + "\n");
+        }
         
-        break;      //added break as it is a while loop  
-                    
-        //TODO game logic :
+        
     }
 
 }
@@ -292,11 +359,6 @@ List<Building> Generate_list_of_2_random_buildings_selected()
     return list_of_2_random_buildings_selected;
 }
 
-// build a building on designated place
-/*void PlaceBuilding(string placement)
-{
-    if()
-}*/
 
 // check placement inputted by user
 // returns true if the placement is correct and there is nothing placed in the placement selected
@@ -312,19 +374,28 @@ bool CheckPlacement(string placement)
     if (Regex.IsMatch(placement, pattern) == true)
     {
         // check if its within the game_field
-        int placement_col_index = list_of_alphabets.IndexOf(Convert.ToString(placement[0])) + 1;
-        int placement_row_index = int.Parse(placement.Substring(1));
+        int placement_row_index = list_of_alphabets.IndexOf(Convert.ToString(placement[0])) + 1;
+        int placement_col_index = int.Parse(placement.Substring(1));
 
         if (placement_col_index <= game_field[0].Count && placement_row_index <= game_field.Count) 
         {
             // if the designated place is not null
-            if (game_field[placement_row_index - 1][placement_col_index-1] != null)
+            if (game_field[placement_row_index - 1][placement_col_index - 1] != null)
             {
                 return false;
             }
             else
             {
-                return true;
+                if (turn == 0)
+                {
+                    // true if the space is empty
+                    return true;
+                }
+                else
+                {
+                    // TODO: In subsequent turns, buildings must be built orthogonally adjacent to existing buildings.
+                    return true;
+                }
             }
         }
         else
@@ -348,8 +419,8 @@ bool PlaceBuilding(string placement,Building building)
 
     if (CheckPlacement(placement))
     {
-        int placement_col_index = list_of_alphabets.IndexOf(Convert.ToString(placement[0]));
-        int placement_row_index = int.Parse(placement.Substring(1)) - 1;
+        int placement_row_index = list_of_alphabets.IndexOf(Convert.ToString(placement[0]));
+        int placement_col_index = int.Parse(placement.Substring(1)) - 1;
 
         game_field[placement_row_index][placement_col_index] = building;
         return true;
@@ -358,4 +429,9 @@ bool PlaceBuilding(string placement,Building building)
     {
         return false;
     }
+}
+
+void NextTurn()
+{
+    turn += 1;
 }
