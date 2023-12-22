@@ -100,13 +100,12 @@ if(MenuOption == 1) // Start New Game
                         Console.WriteLine("\n" + ex.Message + "\n");
                     }
                 } while (true);
-                
             }
             else
             {
                 // if index out of range
                 Console.Clear();
-                Console.WriteLine("\nWrong Input\n");    
+                Console.WriteLine("\nWrong Input\n");
             }
         }
         catch (Exception ex)
