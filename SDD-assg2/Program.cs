@@ -223,7 +223,14 @@ void DisplayField(List<List<Building?>> game_field)
                 }
                 else if (thickness == 1)
                 {
-                    Console.Write("|     ");
+                    if (game_field[row][col] != null)
+                    {
+                        Console.Write(string.Format("|  {0}  ", game_field[row][col].BuildingAcronym));
+                    }
+                    else
+                    {
+                        Console.Write("|     ");
+                    }
                 }
                 else if (thickness == 2)
                 {
