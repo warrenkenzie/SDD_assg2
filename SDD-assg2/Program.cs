@@ -1,9 +1,9 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
 using SDD_assg2;
-using System;
 
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
+
 
 // MAIN MENU
 int MenuOption; // MenuOption is the option the user decides
@@ -56,17 +56,17 @@ if(MenuOption == 1) // Start New Game
             // show the 2 random buildings selected
             for (int i = 0; i < list_of_2_random_buildings_selected.Count(); i++)
             {
-                Console.WriteLine((i + 1) + " " + list_of_Buildings[i].BuildingName);
+                Console.WriteLine((i + 1) + " " + list_of_2_random_buildings_selected[i].BuildingName);
             }
 
             // prompt user to choose building
             Console.Write("Choose a building to select: ");
-            int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine());
+            int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine()) - 1;
 
             // check if the number is not out of range
-            if(indexOf_random_buildings_selected == 0 && indexOf_random_buildings_selected == 1)
+            if(indexOf_random_buildings_selected == 0 || indexOf_random_buildings_selected == 1)
             {
-                Console.WriteLine(list_of_2_random_buildings_selected[indexOf_random_buildings_selected - 1].BuildingAcronym);
+                Console.WriteLine(list_of_2_random_buildings_selected[indexOf_random_buildings_selected].BuildingAcronym);
                 break;
             }
             else
@@ -143,6 +143,8 @@ void InitializeField()
 // Displays the field
 void DisplayField(List<List<Building?>> game_field)
 {
+    List<string> list_of_alphabets = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     for (int row = 0; row < game_field.Count(); row++)
     {
         // Generate the row of the game_field
@@ -154,7 +156,18 @@ void DisplayField(List<List<Building?>> game_field)
         {
             for (int col = 0; col < game_field[row].Count(); col++)
             {
-                Console.Write("|     ");
+                if (thickness == 0)
+                {
+                    Console.Write("|     ");
+                }
+                else if (thickness == 1)
+                {
+                    Console.Write("|     ");
+                }
+                else if(thickness == 2)
+                {
+                    Console.Write("|     ");
+                }
             }
             Console.WriteLine("|");
         }
@@ -195,3 +208,9 @@ List<Building> Generate_list_of_2_random_buildings_selected()
 
     return list_of_2_random_buildings_selected;
 }
+
+// build a building on designated place
+/*void PlaceBuilding()
+{
+    if ()
+}*/
