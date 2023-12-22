@@ -1,5 +1,8 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
-List<List<string?>> game_field = new List<List<string?>>();
+using SDD_assg2;
+
+List<List<Building?>> game_field = new List<List<Building?>>();
+List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
 
 // MAIN MENU
 int MenuOption; // MenuOption is the option the user decides
@@ -38,6 +41,8 @@ if(MenuOption == 1) // Start New Game
 
     // Initialises the field currently with null
     InitializeField();
+    // Initialises the list of Buildings
+    InitializeBuildingInformation();
 
     while (true)
     {
@@ -86,7 +91,7 @@ void InitializeField()
 {
     for (int row = 0; row < 20; row++)
     {
-        List<string?> row_field = new List<string?>();
+        List<Building?> row_field = new List<Building?>();
         game_field.Add(row_field);
         for (int col = 0; col < 20; col++)
         {
@@ -96,7 +101,7 @@ void InitializeField()
 }
 
 // Displays the field
-void DisplayField(List<List<string?>> game_field)
+void DisplayField(List<List<Building?>> game_field)
 {
     for (int row = 0; row < game_field.Count(); row++)
     {
@@ -117,5 +122,14 @@ void DisplayField(List<List<string?>> game_field)
 
     Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[0].Count)));
     Console.WriteLine("+");
+}
+
+void InitializeBuildingInformation()
+{
+    list_of_Buildings.Add(new Building("Industry", "I"));
+    list_of_Buildings.Add(new Building("Residential", "R"));
+    list_of_Buildings.Add(new Building("Commercial", "C"));
+    list_of_Buildings.Add(new Building("Park", "O"));
+    list_of_Buildings.Add(new Building("Road", "*"));
 }
 
