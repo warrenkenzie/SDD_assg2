@@ -393,8 +393,68 @@ bool CheckPlacement(string placement)
                 }
                 else
                 {
-                    // TODO: In subsequent turns, buildings must be built orthogonally adjacent to existing buildings.
-                    return true;
+                    // assuming start count from 0
+                    int numRows = game_field.Count;
+                    int numCols = game_field[0].Count;
+                    int rowIndex = placement_row_index - 1;
+                    int colIndex = placement_col_index - 1;
+
+                    // Check additional positions for corners and sides
+                    if (rowIndex == 0 && colIndex == 0) // Top-left corner
+                    {
+                        return (game_field[rowIndex][colIndex + 1] != null) ||  // Right
+                               (game_field[rowIndex + 1][colIndex] != null);  // Below
+                    }
+                    else if (rowIndex == 0 && colIndex == numCols - 1) // Top-right corner
+                    {
+                        return (game_field[rowIndex][colIndex - 1] != null) ||  // Left
+                               (game_field[rowIndex + 1][colIndex] != null);  // Below
+                    }
+                    else if (rowIndex == numRows - 1 && colIndex == 0) // Bottom-left corner
+                    {
+                        return (game_field[rowIndex][colIndex + 1] != null) ||  // Right
+                               (game_field[rowIndex - 1][colIndex] != null);  // Above
+                    }
+                    else if (rowIndex == numRows - 1 && colIndex == numCols - 1) // Bottom-right corner
+                    {
+                        return (game_field[rowIndex][colIndex - 1] != null) ||  // Left
+                               (game_field[rowIndex - 1][colIndex] != null);  // Above
+                    }
+                    else if (rowIndex == 0) // Top side (excluding corners)
+                    {
+                        return (game_field[rowIndex][colIndex - 1] != null) ||  // Left
+                               (game_field[rowIndex][colIndex + 1] != null) ||  // Right
+                               (game_field[rowIndex + 1][colIndex] != null);  // Below
+                    }
+                    else if (rowIndex == numRows - 1) // Bottom side (excluding corners)
+                    {
+                        return (game_field[rowIndex][colIndex - 1] != null) ||  // Left
+                               (game_field[rowIndex][colIndex + 1] != null) ||  // Right
+                               (game_field[rowIndex - 1][colIndex] != null);  // Above
+                    }
+                    else if (colIndex == 0) // Left side (excluding corners)
+                    {
+                        return (game_field[rowIndex - 1][colIndex] != null) ||  // Above
+                               (game_field[rowIndex + 1][colIndex] != null) ||  // Below
+                               (game_field[rowIndex][colIndex + 1] != null);  // Right
+                    }
+                    else if (colIndex == numCols - 1) // Right side (excluding corners)
+                    {
+                        return (game_field[rowIndex - 1][colIndex] != null) ||  // Above
+                               (game_field[rowIndex + 1][colIndex] != null) ||  // Below
+                               (game_field[rowIndex][colIndex - 1] != null);  // Left
+                    }
+                    else if((rowIndex > 0 && rowIndex < numRows) && (colIndex > 0 && colIndex < numCols)) // for checking all 4 sides
+                    {
+                        return (rowIndex > 0 && game_field[rowIndex - 1][colIndex] != null) ||  // Above
+                                (rowIndex < numRows - 1 && game_field[rowIndex + 1][colIndex] != null) ||  // Below
+                                (colIndex > 0 && game_field[rowIndex][colIndex - 1] != null) ||  // Left
+                                (colIndex < numCols - 1 && game_field[rowIndex][colIndex + 1] != null); // right
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
         }
