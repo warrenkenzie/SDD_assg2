@@ -1,5 +1,6 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
 using SDD_assg2;
+using System.Globalization;
 
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
@@ -145,17 +146,45 @@ void DisplayField(List<List<Building?>> game_field)
 {
     List<string> list_of_alphabets = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
             "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+    bool placeAlphabet = true; // boolean value that if the alphabets have been placed on the left side
+
+    // prints out the numbers on the x axis of the field
+    Console.Write(string.Format("  "));
+    for (int i = 0; i < 5; i++)
+    {
+        Console.Write(string.Format("  {0}   ", i + 1));
+    }
+    Console.WriteLine();
+
     for (int row = 0; row < game_field.Count(); row++)
     {
         // Generate the row of the game_field
-        Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[row].Count)));
+        Console.Write(string.Format("{0}+-----", " "));
+        Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[row].Count - 1)));
         Console.WriteLine("+");
+
+        placeAlphabet = true;
 
         // thickness is the thickness of a row
         for (int thickness = 0; thickness < 3; thickness++)
         {
             for (int col = 0; col < game_field[row].Count(); col++)
             {
+                // if its the first col, print empty space
+                if(placeAlphabet == true)
+                {   
+                    if(thickness == 1)
+                    {
+                        // print the alphabet at the first col
+                        Console.Write(list_of_alphabets[row]);
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                }
+
                 if (thickness == 0)
                 {
                     Console.Write("|     ");
@@ -164,16 +193,31 @@ void DisplayField(List<List<Building?>> game_field)
                 {
                     Console.Write("|     ");
                 }
-                else if(thickness == 2)
+                else if (thickness == 2)
                 {
                     Console.Write("|     ");
                 }
+
+                // if col is 0, turn placeAlphabet so the subsequent columns dont have alphabet
+                if (col == 0)
+                {
+                    placeAlphabet = false;
+                }
+                // if col is the last one, turn placeAlphabet to true so that the next col prints alphabet
+                if (col == game_field[row].Count() - 1)
+                {
+                    placeAlphabet = true;
+                }
             }
             Console.WriteLine("|");
+           
         }
+        
     }
 
-    Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[0].Count)));
+    // Generate the last row of the game_field
+    Console.Write(string.Format("{0}+-----", " "));
+    Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[0].Count - 1)));
     Console.WriteLine("+");
 }
 
