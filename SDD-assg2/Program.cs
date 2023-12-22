@@ -1,5 +1,6 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
 using SDD_assg2;
+using System;
 
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
@@ -43,6 +44,23 @@ if(MenuOption == 1) // Start New Game
     InitializeField();
     // Initialises the list of Buildings
     InitializeBuildingInformation();
+
+    // randomly choose 2 buildings for user to select
+    List<Building> list_of_2_random_buildings_selected = new List<Building>();
+
+ 
+
+    /*for (int i=0; i < 2; i++)
+    {
+        // Generate a random integer
+        int randomNumber1 = random.Next(0, list_of_Buildings.Count());     
+        list_of_2_random_buildings_selected.Add(list_of_Buildings[randomIndex_ofBuilding]);
+        Console.WriteLine((i+1) + " " + list_of_Buildings[randomIndex_ofBuilding].BuildingName);
+    }*/
+
+    Console.Write("Choose a building to select: ");
+    int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine(list_of_Buildings[indexOf_random_buildings_selected-1].BuildingAcronym);
 
     while (true)
     {
@@ -133,3 +151,25 @@ void InitializeBuildingInformation()
     list_of_Buildings.Add(new Building("Road", "*"));
 }
 
+// choose 2 random different buildings from list_of_Buildings
+List<Building> Generate_list_of_2_random_buildings_selected()
+{
+    // Create an instance of the Random class
+    Random random = new Random();
+    List<Building> list_of_2_random_buildings_selected = new List<Building>();
+
+    // Generate the first random index
+    int randomNumber1 = random.Next(0, list_of_Buildings.Count());
+
+    int randomNumber2;
+    // Generate the second random index and if its equal to first random index loop it until it is different
+    do
+    {
+        randomNumber2 = random.Next(0, list_of_Buildings.Count());
+    } while (randomNumber2 == randomNumber1);
+
+    list_of_2_random_buildings_selected.Add(list_of_Buildings[randomNumber1]);
+    list_of_2_random_buildings_selected.Add(list_of_Buildings[randomNumber2]);
+
+    return list_of_2_random_buildings_selected;
+}
