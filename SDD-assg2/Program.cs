@@ -1,6 +1,7 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
 using SDD_assg2;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
@@ -49,7 +50,8 @@ if(MenuOption == 1) // Start New Game
     // randomly choose 2 buildings for user to select
     List<Building> list_of_2_random_buildings_selected = Generate_list_of_2_random_buildings_selected();
 
-    // prompts user which building to choose
+    // prompts user which building to choose and prompt user to designate where to place the building
+    bool If_have_exceptions = true;
     do
     {
         try
@@ -68,7 +70,35 @@ if(MenuOption == 1) // Start New Game
             if(indexOf_random_buildings_selected == 0 || indexOf_random_buildings_selected == 1)
             {
                 Console.WriteLine(list_of_2_random_buildings_selected[indexOf_random_buildings_selected].BuildingAcronym);
-                break;
+                // displays the game_field on a console
+                DisplayField(game_field);
+
+                //prompt user to designate where to place the building
+                do
+                {
+                    try
+                    {
+                        Console.Write("Select where to place the building (e.g A1): "); string placement = Convert.ToString(Console.ReadLine());
+                        // Define the regular expression pattern
+                        string pattern = @"^[A-Z]\d$";
+                        // Use Regex.IsMatch to check if the input matches the pattern and if the placement is within the field
+                        if (Regex.IsMatch(placement, pattern) == true)
+                        {
+                            Console.WriteLine("Place Successfully");
+                            If_have_exceptions = false; break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong Input");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("\n" + ex.Message + "\n");
+                    }
+                } while (true);
+                
             }
             else
             {
@@ -82,13 +112,15 @@ if(MenuOption == 1) // Start New Game
             Console.Clear();
             Console.WriteLine("\n" + ex.Message + "\n");
         }
-    } while (true); // Continue the loop until no exception occur (which means chooses correct building)
+    } while (If_have_exceptions); // Continue the loop until no exception occur (which means chooses correct building)
 
 
     while (true)
     {
         // displays the game_field on a console
         DisplayField(game_field);
+        
+        
         break;      //added break as it is a while loop  
                     
         //TODO game logic :
@@ -254,7 +286,7 @@ List<Building> Generate_list_of_2_random_buildings_selected()
 }
 
 // build a building on designated place
-/*void PlaceBuilding()
+/*void PlaceBuilding(string placement)
 {
-    if ()
+    if()
 }*/
