@@ -1,7 +1,5 @@
 ﻿// The game field is a list which contains lists and represents the field. For now it only accepts strings but can later be changed to objects
 using SDD_assg2;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Text.RegularExpressions;
 
 List<List<Building?>> game_field = new List<List<Building?>>();
@@ -64,9 +62,10 @@ if(MenuOption == 1) // Start New Game
         try
         {
             // show the 2 random buildings selected
+            Console.WriteLine("Choose your first building: ");
             for (int i = 0; i < list_of_2_random_buildings_selected.Count(); i++)
             {
-                Console.WriteLine((i + 1) + " " + list_of_2_random_buildings_selected[i].BuildingName);
+                Console.WriteLine((i + 1) + ". " + list_of_2_random_buildings_selected[i].BuildingName +  "  " + list_of_2_random_buildings_selected[i].BuildingAcronym);
             }
 
             // prompt user to choose building
@@ -172,20 +171,21 @@ if(MenuOption == 1) // Start New Game
 
                         for (int i = 0; i < list_of_Buildings.Count; i++)
                         {
-                            Console.WriteLine(i + 1 + ". " + list_of_Buildings[i].BuildingName);
+                            Console.WriteLine(i + 1 + ". " + list_of_Buildings[i].BuildingName + "  " + list_of_Buildings[i].BuildingAcronym);
                         }
                         Console.WriteLine("6. Exit Build Buidling");
 
                         // Choose a building
                         Console.Write("Choose a Building: ");
                         int chosenBuilding_index = Convert.ToInt32(Console.ReadLine());
-                        Building chosenBuilding = list_of_Buildings[chosenBuilding_index - 1];
-
                         // if the person decided to no longer choose a building, exit the Build a Buidling menu
                         if (chosenBuilding_index == 6)
                         {
                             break;
                         }
+
+                        // if the person chose a buidling
+                        Building chosenBuilding = list_of_Buildings[chosenBuilding_index - 1];
 
                         // choose a location
                         Console.Write("Choose location(e.g A1): ");
@@ -297,31 +297,31 @@ void DisplayField(List<List<Building?>> game_field)
     bool placeAlphabet = true; // boolean value that if the alphabets have been placed on the left side
 
     // prints out the numbers on the x axis of the field
-    Console.Write(string.Format("  "));
+    Console.Write(string.Format(" "));
     for (int i = 0; i < 5; i++)
     {
-        Console.Write(string.Format("  {0}   ", i + 1));
+        Console.Write(string.Format("  {0}", i + 1));
     }
     Console.WriteLine();
 
     for (int row = 0; row < game_field.Count(); row++)
     {
         // Generate the row of the game_field
-        Console.Write(string.Format("{0}+-----", " "));
-        Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[row].Count - 1)));
+        Console.Write(string.Format("{0}+--", " "));
+        Console.Write(string.Concat(Enumerable.Repeat("+--", game_field[row].Count - 1)));
         Console.WriteLine("+");
 
         placeAlphabet = true;
 
         // thickness is the thickness of a row
-        for (int thickness = 0; thickness < 3; thickness++)
+        for (int thickness = 0; thickness < 1; thickness++)
         {
             for (int col = 0; col < game_field[row].Count(); col++)
             {
                 // if its the first col, print empty space
                 if(placeAlphabet == true)
                 {   
-                    if(thickness == 1)
+                    if(thickness == 0)
                     {
                         // print the alphabet at the first col
                         Console.Write(list_of_alphabets[row]);
@@ -334,22 +334,14 @@ void DisplayField(List<List<Building?>> game_field)
 
                 if (thickness == 0)
                 {
-                    Console.Write("|     ");
-                }
-                else if (thickness == 1)
-                {
                     if (game_field[row][col] != null)
                     {
-                        Console.Write(string.Format("|  {0}  ", game_field[row][col].BuildingAcronym));
+                        Console.Write(string.Format("|{0}", game_field[row][col].BuildingAcronym));
                     }
                     else
                     {
-                        Console.Write("|     ");
+                        Console.Write("|  ");
                     }
-                }
-                else if (thickness == 2)
-                {
-                    Console.Write("|     ");
                 }
 
                 // if col is 0, turn placeAlphabet so the subsequent columns dont have alphabet
@@ -370,18 +362,18 @@ void DisplayField(List<List<Building?>> game_field)
     }
 
     // Generate the last row of the game_field
-    Console.Write(string.Format("{0}+-----", " "));
-    Console.Write(string.Concat(Enumerable.Repeat("+-----", game_field[0].Count - 1)));
+    Console.Write(string.Format("{0}+--", " "));
+    Console.Write(string.Concat(Enumerable.Repeat("+--", game_field[0].Count - 1)));
     Console.WriteLine("+");
 }
 
 void InitializeBuildingInformation()
 {
-    list_of_Buildings.Add(new Building("Industry", "I"));
-    list_of_Buildings.Add(new Building("Residential", "R"));
-    list_of_Buildings.Add(new Building("Commercial", "C"));
-    list_of_Buildings.Add(new Building("Park", "O"));
-    list_of_Buildings.Add(new Building("Road", "*"));
+    list_of_Buildings.Add(new Building("Industry", "IN"));
+    list_of_Buildings.Add(new Building("Residential", "RE"));
+    list_of_Buildings.Add(new Building("Commercial", "CC"));
+    list_of_Buildings.Add(new Building("Park", "OO"));
+    list_of_Buildings.Add(new Building("Road", "**"));
 }
 
 // choose 2 random different buildings from list_of_Buildings
