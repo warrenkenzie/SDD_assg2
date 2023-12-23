@@ -7,7 +7,9 @@ using System.Text.RegularExpressions;
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
 // turn counter
-int turn = 0;
+int turn;
+int totalCoins;
+bool gameContinue;
 
 // MAIN MENU
 int MenuOption; // MenuOption is the option the user decides
@@ -43,6 +45,9 @@ while (true)
 if(MenuOption == 1) // Start New Game
 {
     // START OF GAME LOOP
+    turn = 0; 
+    totalCoins = 1;
+    gameContinue = true;
    
     // Initialises the field currently with null
     InitializeField();
@@ -67,6 +72,12 @@ if(MenuOption == 1) // Start New Game
             // prompt user to choose building
             Console.Write("Choose a building to select: ");
             int indexOf_random_buildings_selected = Convert.ToInt32(Console.ReadLine()) - 1;
+
+            if(totalCoins == 0)
+            {
+                Console.WriteLine("Insufficient coins!");
+                break;
+            }
 
             // check if the number is not out of range
             if(indexOf_random_buildings_selected == 0 || indexOf_random_buildings_selected == 1)
@@ -116,7 +127,7 @@ if(MenuOption == 1) // Start New Game
     } while (If_have_exceptions); // Continue the loop until no exception occur (which means chooses correct building)
 
     // THE REST OF THE GAME LOOP    
-    while (true)
+    while (gameContinue)
     {
         // displays the game_field on a console
         DisplayField(game_field);
@@ -125,6 +136,7 @@ if(MenuOption == 1) // Start New Game
         try
         {
             Console.WriteLine("Turn " + turn);
+            Console.WriteLine("Total Coins: " + totalCoins + " (1 Building = 1 Coin)");
             Console.WriteLine("Choose your action: \n" +
                                "1. Build Building\n" +
                                "2. Next Turn");
@@ -137,6 +149,27 @@ if(MenuOption == 1) // Start New Game
                 {
                     do
                     {
+                        if (totalCoins == 1)
+                        {
+                            string suicideOption;
+                            Console.Write("Are you sure? The game will end when you run out of coins. (Y/N)? ");
+                            suicideOption = Console.ReadLine().ToUpper();
+
+                            if (suicideOption == "Y")
+                            {
+                                gameContinue = false;
+                                break;
+                                // TO DO END GAME DISPLAY
+                            }
+
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        totalCoins--;
+
                         for (int i = 0; i < list_of_Buildings.Count; i++)
                         {
                             Console.WriteLine(i + 1 + ". " + list_of_Buildings[i].BuildingName);
@@ -149,7 +182,7 @@ if(MenuOption == 1) // Start New Game
                         Building chosenBuilding = list_of_Buildings[chosenBuilding_index - 1];
 
                         // if the person decided to no longer choose a building, exit the Build a Buidling menu
-                        if(chosenBuilding_index == 6)
+                        if (chosenBuilding_index == 6)
                         {
                             break;
                         }
@@ -163,13 +196,13 @@ if(MenuOption == 1) // Start New Game
                             break;
                         }
                     } while (true);
-                }catch(Exception ex)
-                {
-                    Console.WriteLine("\n" + ex.Message + "\n");
                 }
-                
-                
-            }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("\n" + ex.Message + "\n");
+                    }
+                }
+            
             else if (userAction == 2) // next turn
             {
                 try
@@ -205,11 +238,8 @@ if(MenuOption == 1) // Start New Game
         catch(Exception ex) 
         {
             Console.WriteLine("\n" + ex.Message + "\n");
-        }
-        
-        
+        }      
     }
-
 }
 else if(MenuOption == 2) // Display High Scores
 {
