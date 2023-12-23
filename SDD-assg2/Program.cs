@@ -159,7 +159,7 @@ if(MenuOption == 1) // Start New Game
                             {
                                 gameContinue = false;
                                 break;
-                                // TO DO END GAME DISPLAY
+                                // TO DO END-GAME DISPLAY
                             }
 
                             else
