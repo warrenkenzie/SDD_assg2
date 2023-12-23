@@ -21,7 +21,7 @@ while (true)
         MenuOption = DisplayMenu();
            
         // exception handling for integer out of range
-        if(MenuOption < 4 & MenuOption > 0)
+        if(MenuOption < 5 & MenuOption > 0)
         {
             // clear main menu after choosing an option
             Console.Clear();
@@ -223,7 +223,8 @@ else if(MenuOption == 3) // Load Saved Game
 }
 else if(MenuOption == 4) // Exit Game
 {
-
+    Console.WriteLine("Exiting the game...");
+    Environment.Exit(0);
 }
 
 // displays the main menu and returns the which option the user chooses
