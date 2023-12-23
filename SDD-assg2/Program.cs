@@ -2,6 +2,21 @@
 using SDD_assg2;
 using System.Text.RegularExpressions;
 
+//Dictionary to store the top 10 players & scores
+Dictionary<string, int> playerScores = new Dictionary<string, int>
+{
+    { "Gustavo", 100 },
+    { "Kelly", 85 },
+    { "Jordan", 120 },
+    { "Joey", 95 },
+    { "Zachary", 110 },
+    { "Nicole", 80 },
+    { "Tyson", 130 },
+    { "Jeraldine", 90 },
+    { "John", 105 },
+    { "Chloe", 75 }
+};
+
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
 // turn counter
@@ -44,7 +59,7 @@ if(MenuOption == 1) // Start New Game
 {
     // START OF GAME LOOP
     turn = 0; 
-    totalCoins = 1;
+    totalCoins = 16;
     gameContinue = true;
    
     // Initialises the field currently with null
@@ -243,8 +258,8 @@ if(MenuOption == 1) // Start New Game
 }
 else if(MenuOption == 2) // Display High Scores
 {
-
-
+    Console.Clear();
+    DisplayTopScores(playerScores);
 }
 else if(MenuOption == 3) // Load Saved Game
 { 
@@ -369,11 +384,11 @@ void DisplayField(List<List<Building?>> game_field)
 
 void InitializeBuildingInformation()
 {
-    list_of_Buildings.Add(new Building("Industry", "IN"));
-    list_of_Buildings.Add(new Building("Residential", "RE"));
-    list_of_Buildings.Add(new Building("Commercial", "CC"));
-    list_of_Buildings.Add(new Building("Park", "OO"));
-    list_of_Buildings.Add(new Building("Road", "**"));
+    list_of_Buildings.Add(new Building("Industry", "I"));
+    list_of_Buildings.Add(new Building("Residential", "R"));
+    list_of_Buildings.Add(new Building("Commercial", "C"));
+    list_of_Buildings.Add(new Building("Park", "O"));
+    list_of_Buildings.Add(new Building("Road", "*"));
 }
 
 // choose 2 random different buildings from list_of_Buildings
@@ -397,6 +412,19 @@ List<Building> Generate_list_of_2_random_buildings_selected()
     list_of_2_random_buildings_selected.Add(list_of_Buildings[randomNumber2]);
 
     return list_of_2_random_buildings_selected;
+}
+
+
+//Display the top 10 scores in descending order
+void DisplayTopScores(Dictionary<string, int> playerScores)
+{
+    var sortedPlayers = playerScores.OrderByDescending(pair => pair.Value).Take(10);
+
+    Console.WriteLine("Top 10 Players and Scores:");
+    foreach (var player in sortedPlayers)
+    {
+        Console.WriteLine($"{player.Key}: {player.Value}");
+    }
 }
 
 
