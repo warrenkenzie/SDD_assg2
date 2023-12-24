@@ -2,20 +2,6 @@
 using SDD_assg2;
 using System.Text.RegularExpressions;
 
-//Dictionary to store the top 10 players & scores
-Dictionary<string, int> playerScores = new Dictionary<string, int>
-{
-    { "Gustavo", 100 },
-    { "Kelly", 85 },
-    { "Jordan", 120 },
-    { "Joey", 95 },
-    { "Zachary", 110 },
-    { "Nicole", 80 },
-    { "Tyson", 130 },
-    { "Jeraldine", 90 },
-    { "John", 105 },
-    { "Chloe", 75 }
-};
 
 List<List<Building?>> game_field = new List<List<Building?>>();
 List<Building> list_of_Buildings = new List<Building>(); // contains the list of buildings that can be selected
@@ -258,8 +244,15 @@ if(MenuOption == 1) // Start New Game
 }
 else if(MenuOption == 2) // Display High Scores
 {
-    Console.Clear();
-    DisplayTopScores(playerScores);
+    // Specify the file path
+    string filePath = "C:/Users/Lunat/Desktop/topscorers.txt";
+
+    // Read player scores from the file
+    Dictionary<string, int> playerScoresFromFile = ReadPlayerScoresFromFile(filePath);
+
+    // Display the top 10 scores
+    DisplayTopScores(playerScoresFromFile);
+
 }
 else if(MenuOption == 3) // Load Saved Game
 { 
@@ -413,6 +406,43 @@ List<Building> Generate_list_of_2_random_buildings_selected()
 
     return list_of_2_random_buildings_selected;
 }
+
+// Method to read player scores from a text file
+Dictionary<string, int> ReadPlayerScoresFromFile(string filePath)
+{
+    Dictionary<string, int> playerScores = new Dictionary<string, int>();
+
+    try
+    {
+        // Read all lines from the file
+        string[] lines = File.ReadAllLines(filePath);
+
+        foreach (string line in lines)
+        {
+            // Split each line into name and score
+            string[] parts = line.Split(',');
+            if (parts.Length == 2)
+            {
+                string playerName = parts[0].Trim();
+                int playerScore;
+
+                // Try parsing the score
+                if (int.TryParse(parts[1].Trim(), out playerScore))
+                {
+                    // Add the player to the dictionary
+                    playerScores.Add(playerName, playerScore);
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error reading file: {ex.Message}");
+    }
+
+    return playerScores;
+}
+
 
 // Display the top 10 scores in descending order
 void DisplayTopScores(Dictionary<string, int> playerScores)
