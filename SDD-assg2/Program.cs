@@ -245,7 +245,7 @@ if(MenuOption == 1) // Start New Game
 else if(MenuOption == 2) // Display High Scores
 {
     // Specify the file path
-    string filePath = "C:/Users/Lunat/Desktop/topscorers.txt";
+    string filePath = "topscorers.txt";
 
     // Read player scores from the file
     Dictionary<string, int> playerScoresFromFile = ReadPlayerScoresFromFile(filePath);
