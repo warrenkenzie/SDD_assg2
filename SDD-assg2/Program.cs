@@ -45,7 +45,7 @@ if(MenuOption == 1) // Start New Game
 {
     // START OF GAME LOOP
     turn = 0; 
-    totalCoins = 1;
+    totalCoins = 16;
     gameContinue = true;
    
     // Initialises the field currently with null
@@ -167,7 +167,7 @@ if(MenuOption == 1) // Start New Game
                             }
                         }
 
-                        totalCoins--;
+                       
 
                         for (int i = 0; i < list_of_Buildings.Count; i++)
                         {
@@ -191,8 +191,11 @@ if(MenuOption == 1) // Start New Game
                         Console.Write("Choose location(e.g A1): ");
                         string chosenplacement = Convert.ToString(Console.ReadLine());
 
+                        // sucessfully placed a building
                         if (PlaceBuilding(chosenplacement, chosenBuilding))
                         {
+                            totalCoins--; // minus coin when place building successful
+                            NextTurn(); // after placing a building, do next turn
                             break;
                         }
                     } while (true);
@@ -568,4 +571,155 @@ bool PlaceBuilding(string placement,Building building)
 void NextTurn()
 {
     turn += 1;
+
+    // park generate gold
+    // loop through every cell in game field
+    for(int row = 0; row < game_field.Count; row++)
+    {
+        for(int col=0; col < game_field[row].Count; col++)
+        {
+            Building game_field_cell = game_field[row][col]; // refers to the game field cell reading from left to right
+            // checks if the game field is null
+            if (game_field_cell != null)
+            {
+                // checks what it contains
+                if(game_field_cell.BuildingName == "Park")
+                {
+                    // check cells adjacent to current cell and if 
+                    // Scores 1 point per park adjacent to it
+                    Park_GenerateGold(row, col, game_field.Count, game_field[row].Count);
+                }
+            }
+        }
+    }
+}
+
+// check cells adjacent to current cell and if 
+// Scores 1 point per park adjacent to it
+void Park_GenerateGold(int rowIndex, int colIndex,int numRows, int numCols)
+{
+    // Check additional positions for corners and sides
+    if (rowIndex == 0 && colIndex == 0) // Top-left corner
+    {
+        if(game_field[rowIndex][colIndex + 1]!= null && game_field[rowIndex][colIndex + 1].BuildingName == "Park")
+        {
+            totalCoins += 1;
+        }
+        if(game_field[rowIndex + 1][colIndex]!= null && game_field[rowIndex + 1][colIndex].BuildingName == "Park")
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == 0 && colIndex == numCols - 1) // Top-right corner
+    {
+        if(game_field[rowIndex][colIndex - 1]!= null && game_field[rowIndex][colIndex - 1].BuildingName == "Park") // Left
+        {
+            totalCoins += 1;
+        }
+        if(game_field[rowIndex + 1][colIndex]!= null && game_field[rowIndex + 1][colIndex].BuildingName == "Park") // Below
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == numRows - 1 && colIndex == 0) // Bottom-left corner
+    {
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "Park")  // Right
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "Park") // Above
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == numRows - 1 && colIndex == numCols - 1) // Bottom-right corner
+    {
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "Park")// Left
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "Park")// Above
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == 0) // Top side (excluding corners)
+    {
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "Park")// Left
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "Park")// Right
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "Park")// Below
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == numRows - 1) // Bottom side (excluding corners)
+    {
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "Park") // Left
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "Park")  // Right
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "Park") // Above
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (colIndex == 0) // Left side (excluding corners)
+    {
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "Park")// Above
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "Park")// Below
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "Park") // Right
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (colIndex == numCols - 1) // Right side (excluding corners)
+    {
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "Park") // Above
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] !=null && game_field[rowIndex + 1][colIndex].BuildingName == "Park") // Below
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "Park") // Left
+        {
+            totalCoins += 1;
+        }
+    }
+    else if ((rowIndex > 0 && rowIndex < numRows) && (colIndex > 0 && colIndex < numCols)) // for checking all 4 sides
+    {
+        if (rowIndex > 0 && game_field[rowIndex - 1][colIndex]!=null && game_field[rowIndex - 1][colIndex].BuildingName == "Park")// Above
+        {
+            totalCoins += 1;
+        }
+        if (rowIndex < numRows - 1 && game_field[rowIndex + 1][colIndex]!=null && game_field[rowIndex + 1][colIndex].BuildingName == "Park")// Below
+        {
+            totalCoins += 1;
+        }
+        if (colIndex > 0 && game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "Park") // Left
+        {
+            totalCoins += 1;
+        }
+        if (colIndex < numCols - 1 && game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "Park")// right
+        {
+            totalCoins += 1;
+        }
+    }
 }
