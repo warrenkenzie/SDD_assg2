@@ -138,8 +138,7 @@ if(MenuOption == 1) // Start New Game
             Console.WriteLine("Turn " + turn);
             Console.WriteLine("Total Coins: " + totalCoins + " (1 Building = 1 Coin)");
             Console.WriteLine("Choose your action: \n" +
-                               "1. Build Building\n" +
-                               "2. Next Turn");
+                               "1. Build Building\n");
             Console.Write("Choose: ");
             int userAction = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
@@ -204,33 +203,6 @@ if(MenuOption == 1) // Start New Game
                     }
                 }
             
-            else if (userAction == 2) // next turn
-            {
-                try
-                {
-
-                    Console.Write("Next turn?(y/n): ");
-                    string y_n_nextTurn = Console.ReadLine();
-                    Console.WriteLine();
-                    if (y_n_nextTurn == "y")
-                    {
-                        NextTurn();
-                        Console.Clear();
-                    }
-                    else if (y_n_nextTurn == "n")
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("\n" + ex.Message + "\n");
-                }
-            }
             else
             {
                 Console.WriteLine("\n" + "No Option" + "\n");
