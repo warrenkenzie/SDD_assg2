@@ -600,6 +600,12 @@ void NextTurn()
                 {
                     Commercial_GenerateGold(row, col, game_field.Count, game_field[row].Count);
                 }
+
+                // generate gold for each row if have row
+                if (game_field_cell.BuildingName == "Road")
+                {
+                    totalScore += 1;
+                }
             }
         }
     }
