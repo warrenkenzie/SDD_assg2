@@ -588,6 +588,11 @@ void NextTurn()
                     // check cells adjacent to current cell and if 
                     // Scores 1 point per park adjacent to it
                     Park_GenerateGold(row, col, game_field.Count, game_field[row].Count);
+                }else if (game_field_cell.BuildingName == "Industry")
+                {
+                    // Scores 1 point per industry in the city
+                    // Each industry generates 1 coin per residential building adjacent to it
+                    Industry_GenerateGold(row, col, game_field.Count, game_field[row].Count);
                 }
             }
         }
@@ -718,6 +723,138 @@ void Park_GenerateGold(int rowIndex, int colIndex,int numRows, int numCols)
             totalCoins += 1;
         }
         if (colIndex < numCols - 1 && game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "Park")// right
+        {
+            totalCoins += 1;
+        }
+    }
+}
+
+void Industry_GenerateGold(int rowIndex, int colIndex, int numRows, int numCols)
+{
+    // Scores 1 point per industry in the city
+    totalScore += 1;
+
+    // Each industry generates 1 coin per residential building adjacent to it
+    // Check additional positions for corners and sides
+    if (rowIndex == 0 && colIndex == 0) // Top-left corner
+    {
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "residential")
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "residential")
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == 0 && colIndex == numCols - 1) // Top-right corner
+    {
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "residential") // Left
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "residential") // Below
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == numRows - 1 && colIndex == 0) // Bottom-left corner
+    {
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "residential")  // Right
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "residential") // Above
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == numRows - 1 && colIndex == numCols - 1) // Bottom-right corner
+    {
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "residential")// Left
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "residential")// Above
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == 0) // Top side (excluding corners)
+    {
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "residential")// Left
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "residential")// Right
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "residential")// Below
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (rowIndex == numRows - 1) // Bottom side (excluding corners)
+    {
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "residential") // Left
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "residential")  // Right
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "residential") // Above
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (colIndex == 0) // Left side (excluding corners)
+    {
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "residential")// Above
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "residential")// Below
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "residential") // Right
+        {
+            totalCoins += 1;
+        }
+    }
+    else if (colIndex == numCols - 1) // Right side (excluding corners)
+    {
+        if (game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "residential") // Above
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "residential") // Below
+        {
+            totalCoins += 1;
+        }
+        if (game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "residential") // Left
+        {
+            totalCoins += 1;
+        }
+    }
+    else if ((rowIndex > 0 && rowIndex < numRows) && (colIndex > 0 && colIndex < numCols)) // for checking all 4 sides
+    {
+        if (rowIndex > 0 && game_field[rowIndex - 1][colIndex] != null && game_field[rowIndex - 1][colIndex].BuildingName == "residential")// Above
+        {
+            totalCoins += 1;
+        }
+        if (rowIndex < numRows - 1 && game_field[rowIndex + 1][colIndex] != null && game_field[rowIndex + 1][colIndex].BuildingName == "residential")// Below
+        {
+            totalCoins += 1;
+        }
+        if (colIndex > 0 && game_field[rowIndex][colIndex - 1] != null && game_field[rowIndex][colIndex - 1].BuildingName == "residential") // Left
+        {
+            totalCoins += 1;
+        }
+        if (colIndex < numCols - 1 && game_field[rowIndex][colIndex + 1] != null && game_field[rowIndex][colIndex + 1].BuildingName == "residential")// right
         {
             totalCoins += 1;
         }
